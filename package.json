@@ -26,5 +26,6 @@
   "author": {
     "name": "Alexander Epolite",
     "email": "alexander@epolite.net"
-  }
+  },
+  "types": "src/index.d.ts"
 }

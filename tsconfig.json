@@ -12,7 +12,6 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
-    "noEmit": true,
 
     // Best practices
     "strict": true,
@@ -22,6 +21,14 @@
     // Some stricter flags (disabled by default)
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
-  }
+    "noPropertyAccessFromIndexSignature": false,
+    
+    // Module specific
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "./src",
+    "esModuleInterop": true
+  },
+  "include": ["src/*.ts"],
+  "exclude": ["node_modules", "src/*.d.ts"]
 }
