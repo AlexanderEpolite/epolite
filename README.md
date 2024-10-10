@@ -9,14 +9,14 @@ This library contains a public/private keypair system which can be used for post
 1. FALCON-512 is used for signing messages, to be used prior to encryption.
 2. Kyber-512 is used for encrypting messages (was Kyber-1024), to be used to encrypt messages using AES.
 
-Kyber 1024 *was* used; however, it was changed to 512 do to the unreasonable size of messages, upwards of 200 KB for a single byte message, scaling at O(n).
+Kyber 1024 *was* used; however, it was changed to 512 due to the unreasonable size of messages, upwards of 200 KB for a single byte message, scaling at O(n).
 
 In the future, this may be updated to include other PQ encryption standards; however, these are the ones I chose for now.
 
 ### Disclaimers
 1. This library, while functional, has not been audited, either by me or anyone else.
 2. The returned encrypted messages are **_MASSIVE_**.  You can expect a 4 KB encrypted message from a 10 byte input, and at least 5x when the input is signed.
-3. I cannot guarantee any encryption libraries used in this library to be vulnerability or exploit free.  While they are approved by the NIST, I personally do not fully endorse them due to how new these standards are.
+3. I cannot guarantee any encryption standards used in this library to be vulnerability or exploit free.  While they are approved by the NIST, I personally do not fully endorse them due to how new these standards are.
 4. This library uses crypto subtle, and was designed specifically for browser use.
 
 ## Using this library
