@@ -1,0 +1,30 @@
+{
+  "name": "epolite",
+  "module": "src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@dashlane/pqc-sign-falcon-512-node": "^1.0.0",
+    "@noble/post-quantum": "^0.2.0"
+  },
+  "version": "0.0.2",
+  "description": "A public-private key library for post-quantum cryptography (early stage, use with caution)",
+  "bugs": {
+    "url": "https://github.com/alexanderepolite/epolite/issues"
+  },
+  "homepage": "https://github.com/alexanderepolite/epolite",
+  "publisher": "AlexanderEpolite",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexanderepolite/epolite"
+  },
+  "author": {
+    "name": "Alexander Epolite",
+    "email": "alexander@epolite.net"
+  }
+}
