@@ -1,4 +1,4 @@
-# EPOLITE
+# EPOLITE Privacy Guard
 
 ### Efficient Post-Quantum Optimized Lattice-based Implementation of Trusted Encryption
 
