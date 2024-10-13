@@ -85,4 +85,4 @@ You can find an example in `src/test.ts`.
 
 
 ## Contributing
-Since this is for my own project, I likely not be merging or reviewing pull requests.
+Since this is for my own project, I probably will not merge or review pull requests.
