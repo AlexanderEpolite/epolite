@@ -11,9 +11,10 @@
   "dependencies": {
     "@dashlane/pqc-sign-falcon-512-browser": "^1.0.0",
     "@dashlane/pqc-sign-falcon-512-node": "^1.0.0",
-    "@noble/post-quantum": "^0.2.0"
+    "@noble/post-quantum": "^0.2.0",
+    "buffer": "^6.0.3"
   },
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A public-private key library for post-quantum cryptography (early stage, use with caution)",
   "bugs": {
     "url": "https://github.com/alexanderepolite/epolite/issues"

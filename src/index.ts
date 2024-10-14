@@ -1,8 +1,5 @@
-/*
-For this file, assume any instances of "alice" is you, and "bob" is the person you're communicating with.
-*/
-
 import { ml_kem512 } from '@noble/post-quantum/ml-kem';
+import { Buffer } from 'buffer'; //for web
 
 interface SIGN {
     publicKeyBytes: Promise<number>;
