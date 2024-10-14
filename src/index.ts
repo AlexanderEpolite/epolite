@@ -3,7 +3,27 @@ For this file, assume any instances of "alice" is you, and "bob" is the person y
 */
 
 import { ml_kem512 } from '@noble/post-quantum/ml-kem';
-import signBuilder from '@dashlane/pqc-sign-falcon-512-node';
+
+interface SIGN {
+    publicKeyBytes: Promise<number>;
+    privateKeyBytes: Promise<number>;
+    signatureBytes: Promise<number>;
+    keypair: () => Promise<{
+        publicKey: Uint8Array;
+        privateKey: Uint8Array;
+    }>;
+    sign: (message: Uint8Array, privateKey: Uint8Array) => Promise<{
+        signature: Uint8Array;
+    }>;
+    verify: (signature: Uint8Array, message: Uint8Array, publicKey: Uint8Array) => Promise<boolean>;
+}
+
+let signBuilder: (useFallback?: boolean, wasmFilePath?: string | undefined) => Promise<SIGN>;
+
+if(typeof document !== "undefined")
+    signBuilder = (await import('@dashlane/pqc-sign-falcon-512-browser') as any).default;
+else
+    signBuilder = (await import('@dashlane/pqc-sign-falcon-512-node') as any).default;
 
 const EPOLITE_PUBLIC_KEY_LABEL = '----------BEGIN EPOLITE PUBLIC KEY----------';
 const EPOLITE_PRIVATE_KEY_LABEL = '----------BEGIN EPOLITE PRIVATE KEY----------';
