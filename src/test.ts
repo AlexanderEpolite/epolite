@@ -17,7 +17,7 @@ const decryptedMessage = await decrypt(encryptedMessage, bobKeys.privateKey);
 const { message: decryptedText, signature: decryptedSignature } = JSON.parse(decryptedMessage);
 
 //Step 4: Bob verifies the signature
-const isValid = await verify(decryptedText, decryptedSignature, aliceKeys.publicKey);
+const isValid = await verify(decryptedSignature, aliceKeys.publicKey);
 
 console.log('Decrypted Message:', decryptedText);  // Should output the original message
 console.log('Signature valid:', isValid);          // Should output true if the signature is valid

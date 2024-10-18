@@ -20,7 +20,7 @@ In the future, this may be updated to include other PQ encryption standards; how
 4. This library uses crypto subtle, and was designed specifically for browser use.
 
 ## Using this library
-This library is specifically built for the [Bun Runtime](https://bun.sh).  Please install that and replace Node.JS with this runtime, as it is much faster.
+This library is specifically built for the [Bun Runtime](https://bun.sh).  Please install that and replace NodeJS with this runtime, as it is much faster.
 
 Afterwards, run `bun add epolite` to install this package, and then use the documentation below.
 
@@ -62,7 +62,7 @@ console.log("Decrypted message:", decryptedString);
 ```ts
 import {sign} from "epolite";
 
-//returns a base64 encoded string (signatures aren't too big).
+//returns a base64 encoded string (signatures aren't too big, but they do include the original message).
 const signedMessage: string = await sign("I do not like pineapple pizza", privateKey);
 
 console.log("Signed message:", signedMessage);
@@ -72,11 +72,13 @@ console.log("Signed message:", signedMessage);
 ```ts
 import {verify} from "epolite";
 
-const realMessage: string = "I do not like pineapple pizza";
-const fakeMessage: string = "I LOVE pineapple on pizza";
+//fill these in with the signed message, starting with:
+// ----------BEGIN EPOLITE SIGNED MESSAGE----------
+const realSignature: string;
+const fakeSignature: string;
 
-const verified: boolean = await verify(realMessage, signedMessage, publicKey); //true
-const notVerified: boolean = await verify(fakeMessage, signedMessage, publicKey); //false
+await verify(realSignature, publicKey); //true
+await verify(fakeSignature, publicKey); //false
 ```
 
 ### More examples
