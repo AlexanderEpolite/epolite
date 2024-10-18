@@ -38,6 +38,6 @@ export declare function sign(data: string, privateKey: string): Promise<string>;
  * @param signature The signature to verify.
  * @param publicKey The sender's public key.
  *
- * @returns Whether the signature is valid.
+ * @returns The signed message, or null if invalid.
  */
-export declare function verify(signature: string, publicKey: string): Promise<boolean>;
+export declare function verify(signature: string, publicKey: string): Promise<{message: string} | null>;

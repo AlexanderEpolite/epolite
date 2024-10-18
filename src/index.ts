@@ -224,9 +224,9 @@ export async function sign(data: string, privateKey: string): Promise<string> {
  * @param signature The signature to verify.
  * @param publicKey The sender"s public key.
  * 
- * @returns Whether the signature is valid.
+ * @returns The signed message, or null if invalid.
  */
-export async function verify(signature: string, publicKey: string): Promise<boolean> {
+export async function verify(signature: string, publicKey: string): Promise<{message: string} | null> {
     //extract and decode the public key
     const publicKeyEncoded = publicKey
         .replace(EPOLITE_PUBLIC_KEY_LABEL, "")
@@ -241,11 +241,13 @@ export async function verify(signature: string, publicKey: string): Promise<bool
     //initialize Falcon signing
     const sign = await signBuilder();
     
-    const message = new TextEncoder().encode(JSON.parse(Buffer.from(signature, "base64").toString("utf-8")).raw);
-    const signatureArray = new Uint8Array(Buffer.from(JSON.parse(Buffer.from(signature, "base64").toString("utf-8")).sig, "base64"));
+    const jp = JSON.parse(Buffer.from(signature, "base64").toString("utf-8"));
+    
+    const message = new TextEncoder().encode(jp.raw);
+    const signatureArray = new Uint8Array(Buffer.from(jp.sig, "base64"));
     
     const isValid = await sign.verify(signatureArray, message, falconPublicKey);
     
-    return isValid;
+    return isValid ? {message: jp.raw} : null;
 }
 
