@@ -1,7 +1,7 @@
 import { ml_kem512 } from "@noble/post-quantum/ml-kem";
 import { Buffer } from "buffer"; //for web
 
-const VERSION = 2; //incremental versions, each one is not compatible with earlier ones.
+const VERSION = 3; //incremental versions, each one is not compatible with earlier ones.
 
 interface SIGN {
     publicKeyBytes: Promise<number>;
@@ -97,6 +97,7 @@ export async function encrypt(data: string, otherPublicKey: string): Promise<str
         .replace(EPOLITE_PUBLIC_KEY_LABEL, "")
         .replace(KEY_END_LABEL, "")
         .trim();
+    
     const publicKeyObj = JSON.parse(Buffer.from(publicKeyEncoded, "base64").toString("utf-8"));
     const kyberPublicKey = new Uint8Array(publicKeyObj.kyberPublicKey);
 
@@ -128,8 +129,8 @@ export async function encrypt(data: string, otherPublicKey: string): Promise<str
     
     // Return cipherText, encryptedData, IV
     const payload = {
-        cipherText: Array.from(aliceMeta.cipherText),
-        encryptedData: Array.from(new Uint8Array(encryptedData)),
+        cipherText: Buffer.from(aliceMeta.cipherText).toString("base64"),
+        encryptedData: Buffer.from(encryptedData).toString("base64"),
         iv: Array.from(iv),
         version: VERSION,
     };
@@ -148,8 +149,8 @@ export async function decrypt(encryptedPayload: string, privateKey: string): Pro
     
     //decode payload
     const payload = JSON.parse(Buffer.from(encryptedPayload, "base64").toString("utf-8"));
-    const cipherText = new Uint8Array(payload.cipherText);
-    const encryptedData = new Uint8Array(payload.encryptedData);
+    const cipherText = new Uint8Array(Buffer.from(payload.cipherText, "base64"));
+    const encryptedData = new Uint8Array(Buffer.from(payload.encryptedData, "base64"));
     const iv = new Uint8Array(payload.iv);
     
     const privateKeyEncoded = privateKey
