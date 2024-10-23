@@ -14,7 +14,7 @@
     "@noble/post-quantum": "^0.2.0",
     "buffer": "^6.0.3"
   },
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A public-private key library for post-quantum cryptography (early stage, use with caution)",
   "bugs": {
     "url": "https://github.com/alexanderepolite/epolite/issues"
