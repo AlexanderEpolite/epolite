@@ -3,6 +3,10 @@ import { createKeyPair, decrypt, encrypt, sign, verify } from ".";
 const aliceKeys = await createKeyPair();  //Alice's key pair
 const bobKeys = await createKeyPair();    //Bob's key pair
 
+console.log(`key length: ${aliceKeys.privateKey.length}, ${aliceKeys.publicKey.length}`);
+
+console.log(aliceKeys.publicKey);
+
 const message = "Cool beans";
 
 //step 1: Alice signs the message

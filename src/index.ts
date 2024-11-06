@@ -1,7 +1,30 @@
 import { ml_kem512 } from "@noble/post-quantum/ml-kem";
 import { Buffer } from "buffer"; //for web
 
-const VERSION = 3; //incremental versions, each one is not compatible with earlier ones.
+const VERSION = 4; //incremental versions, each one is not compatible with earlier ones.
+
+function makeBigInt(arr: number[]): string {
+    let bigInt = BigInt(0);
+    
+    for (let i = 0; i < arr.length; i++) {
+        bigInt = (bigInt << BigInt(8)) | BigInt(arr[i]);
+    }
+    
+    return `${bigInt}`;
+}
+
+function makeArray(bas: string) {
+    let b = BigInt(bas);
+    
+    const arr = [];
+    
+    while (b > 0) {
+        arr.unshift(Number(b & BigInt(0xFF)));
+        b >>= BigInt(8);
+    }
+    
+    return arr;
+}
 
 interface SIGN {
     publicKeyBytes: Promise<number>;
@@ -58,14 +81,14 @@ export async function createKeyPair(): Promise<KeyPair> {
     // Combine public keys and private keys
     const publicKeyObj = {
         version: VERSION,
-        kyberPublicKey: Array.from(kyberKeyPair.publicKey),
-        falconPublicKey: Array.from(falconKeyPair.publicKey),
+        kyberPublicKey: makeBigInt(Array.from(kyberKeyPair.publicKey)),
+        falconPublicKey: makeBigInt(Array.from(falconKeyPair.publicKey)),
     };
 
     const privateKeyObj = {
         version: VERSION,
-        kyberPrivateKey: Array.from(kyberKeyPair.secretKey),
-        falconPrivateKey: Array.from(falconKeyPair.privateKey),
+        kyberPrivateKey: makeBigInt(Array.from(kyberKeyPair.secretKey)),
+        falconPrivateKey: makeBigInt(Array.from(falconKeyPair.privateKey)),
     };
 
     // Serialize and encode keys
@@ -99,7 +122,7 @@ export async function encrypt(data: string, otherPublicKey: string): Promise<str
         .trim();
     
     const publicKeyObj = JSON.parse(Buffer.from(publicKeyEncoded, "base64").toString("utf-8"));
-    const kyberPublicKey = new Uint8Array(publicKeyObj.kyberPublicKey);
+    const kyberPublicKey = new Uint8Array(makeArray(publicKeyObj.kyberPublicKey));
 
     // Encapsulate shared secret using Kyber
     const aliceMeta = ml_kem512.encapsulate(kyberPublicKey);
@@ -159,8 +182,8 @@ export async function decrypt(encryptedPayload: string, privateKey: string): Pro
         .trim();
     
     const privateKeyObj = JSON.parse(Buffer.from(privateKeyEncoded, "base64").toString("utf-8"));
-    const kyberPrivateKey = new Uint8Array(privateKeyObj.kyberPrivateKey);
-
+    const kyberPrivateKey = new Uint8Array(makeArray(privateKeyObj.kyberPrivateKey));
+    
     //decapsulate shared secret using Kyber
     const sharedSecret = ml_kem512.decapsulate(cipherText, kyberPrivateKey);
     
@@ -202,7 +225,7 @@ export async function sign(data: string, privateKey: string): Promise<string> {
         .trim();
     
     const privateKeyObj = JSON.parse(Buffer.from(privateKeyEncoded, "base64").toString("utf-8"));
-    const falconPrivateKey = new Uint8Array(privateKeyObj.falconPrivateKey);
+    const falconPrivateKey = new Uint8Array(makeArray(privateKeyObj.falconPrivateKey));
     
     //sign using FALCON-512
     const sign = await signBuilder();
@@ -237,7 +260,7 @@ export async function verify(signature: string, publicKey: string): Promise<{mes
     signature = signature.replace(SIGN_START_LABEL, "").replace(SIGN_END_LABEL, "").trim();
     
     const publicKeyObj = JSON.parse(Buffer.from(publicKeyEncoded, "base64").toString("utf-8"));
-    const falconPublicKey = new Uint8Array(publicKeyObj.falconPublicKey);
+    const falconPublicKey = new Uint8Array(makeArray(publicKeyObj.falconPublicKey));
     
     //initialize Falcon signing
     const sign = await signBuilder();
