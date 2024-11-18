@@ -1,7 +1,7 @@
 import { ml_kem512 } from "@noble/post-quantum/ml-kem";
 import { Buffer } from "buffer"; //for web
 
-const VERSION = 4; //incremental versions, each one is not compatible with earlier ones.
+const VERSION = 5; //incremental versions, each one is not compatible with earlier ones.
 
 function makeBigInt(arr: number[]): string {
     let bigInt = BigInt(0);
@@ -42,10 +42,7 @@ interface SIGN {
 
 let signBuilder: (useFallback?: boolean, wasmFilePath?: string | undefined) => Promise<SIGN>;
 
-if(typeof document !== "undefined")
-    signBuilder = (await import("@dashlane/pqc-sign-falcon-512-browser") as any).default;
-else
-    signBuilder = (await import("@dashlane/pqc-sign-falcon-512-node") as any).default;
+signBuilder = (await import("@dashlane/pqc-sign-falcon-512-browser") as any).default;
 
 const EPOLITE_PUBLIC_KEY_LABEL  = "----------BEGIN EPOLITE PUBLIC KEY----------";
 const EPOLITE_PRIVATE_KEY_LABEL = "----------BEGIN EPOLITE PRIVATE KEY----------";
