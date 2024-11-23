@@ -1,7 +1,8 @@
 import { ml_kem512 } from "@noble/post-quantum/ml-kem";
 import { Buffer } from "buffer"; //for web
+import signBuilder from "@dashlane/pqc-sign-falcon-512-browser";
 
-const VERSION = 5; //incremental versions, each one is not compatible with earlier ones.
+const VERSION = 6; //incremental versions, each one is not compatible with earlier ones.
 
 function makeBigInt(arr: number[]): string {
     let bigInt = BigInt(0);
@@ -25,24 +26,6 @@ function makeArray(bas: string) {
     
     return arr;
 }
-
-interface SIGN {
-    publicKeyBytes: Promise<number>;
-    privateKeyBytes: Promise<number>;
-    signatureBytes: Promise<number>;
-    keypair: () => Promise<{
-        publicKey: Uint8Array;
-        privateKey: Uint8Array;
-    }>;
-    sign: (message: Uint8Array, privateKey: Uint8Array) => Promise<{
-        signature: Uint8Array;
-    }>;
-    verify: (signature: Uint8Array, message: Uint8Array, publicKey: Uint8Array) => Promise<boolean>;
-}
-
-let signBuilder: (useFallback?: boolean, wasmFilePath?: string | undefined) => Promise<SIGN>;
-
-signBuilder = (await import("@dashlane/pqc-sign-falcon-512-browser") as any).default;
 
 const EPOLITE_PUBLIC_KEY_LABEL  = "----------BEGIN EPOLITE PUBLIC KEY----------";
 const EPOLITE_PRIVATE_KEY_LABEL = "----------BEGIN EPOLITE PRIVATE KEY----------";
